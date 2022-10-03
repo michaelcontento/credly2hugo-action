@@ -19,12 +19,10 @@ curl --silent "https://www.credly.com/users/${INPUT_USERNAME}/badges.json" \
             "image_url": .badge_template.image_url, 
             "issued_at": .issued_at_date, 
             "issuer_url": .badge_template.global_activity_url,             
-            "microsoft_ids": [
-                .badge_template.badge_template_activities[] 
-                | .url] 
+            "microsoft_ids": 
+                [.badge_template.badge_template_activities[] | .url] 
                 | del(..|nulls) 
-                | [.[] | split("/") | .[-1] | ascii_upcase 
-            ] ,
+                | [.[] | split("/") | .[-1] | ascii_upcase ],
             "name": .badge_template.name, 
             "url": ("https://www.credly.com/badges/" + .id)
         }) 
