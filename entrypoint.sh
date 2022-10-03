@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -e
 
-USERNAME="${1}"
-DATAFILE="${GITHUB_WORKSPACE}/data/${2}"
+USERNAME="${INPUT_USERNAME}"
+DATAFILE="${GITHUB_WORKSPACE}/data/${INPUT_DATAFILE:-credly-badges.json}"
 
 mkdir -p "$(dirname ${DATAFILE})"
 rm -f "${DATAFILE}"

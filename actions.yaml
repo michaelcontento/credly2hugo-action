@@ -12,10 +12,6 @@ inputs:
     description: 'Filename within the data/ folder'
     required: false
     type: string
-    default: 'credly-badges.json'
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.username }}
-    - ${{ inputs.datafile }}
