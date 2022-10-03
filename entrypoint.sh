@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 set -e
 
-set -x
 INPUT_USERNAME="${INPUT_USERNAME:-$1}"
 INPUT_DATAFILE="${INPUT_DATAFILE:-$2}"
 INPUT_DATAFILE="${INPUT_DATAFILE:-credly-badges.json}"
