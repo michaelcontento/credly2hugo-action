@@ -1,0 +1,21 @@
+name: 'Credly to Hugo'
+description: 'Fetches a single users badges from Credly and stores them as Hugo data file.'
+branding:
+  icon: 'award'
+  color: 'orange'
+inputs:
+  username:
+    description: 'Username on credly'
+    required: true
+    type: string
+  datafile:
+    description: 'Filename within the data/ folder'
+    required: false
+    type: string
+    default: 'credly-badges.json'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.username }}
+    - ${{ inputs.datafile }}
