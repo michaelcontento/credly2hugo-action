@@ -2,23 +2,24 @@
 set -e
 
 INPUT_USERNAME="${INPUT_USERNAME:-$1}"
-echo "::debug username=${INPUT_USERNAME}::Credly username"
+echo "::debug::Credly username: ${INPUT_USERNAME}"
 
 INPUT_DATAFILE="${INPUT_DATAFILE:-$2}"
 INPUT_DATAFILE="${INPUT_DATAFILE:-credly-badges.json}"
 INPUT_DATAFILE="${GITHUB_WORKSPACE}/data/${INPUT_DATAFILE}"
 mkdir -p "$(dirname ${INPUT_DATAFILE})"
 rm -f "${INPUT_DATAFILE}"
-echo "::debug path=${INPUT_DATAFILE}::Storage location for badge json file"
+echo "::debug::Storage location for badge json file: ${INPUT_DATAFILE}"
 
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-$3}"
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-assets/images/credly-badges}"
 INPUT_IMAGEDIR="${GITHUB_WORKSPACE}/${INPUT_IMAGEDIR}"
 mkdir -p "${INPUT_IMAGEDIR}"
-echo "::debug path=${INPUT_IMAGEDIR}::Storage location for badge image files"
+echo "::debug::Storage location for badge image files: ${INPUT_IMAGEDIR}"
 
 URL="https://www.credly.com/users/${INPUT_USERNAME}/badges.json"
-echo "::notice url=${URL}::Downloading infos from Credly"
+echo "::debug::Credly json url: ${URL}"
+echo "::notice::Downloading infos from Credly"
 curl --silent $URL \
     | jq --sort-keys '
         .data 
@@ -47,9 +48,9 @@ for line in $(jq --raw-output '.[] | (.image_url + "," + .id)' ${INPUT_DATAFILE}
 
     outputFile="${INPUT_IMAGEDIR}/${id}.${url##*.}"    
     if [ -f $outputFile ]; then
-        echo "::notice id=${id} url=${url} to=${outputFile}::Badge image for id ${id} already present - skip download"
+        echo "::notice::Badge image for id ${id} already present - skipping download"
     else
-        echo "::notice id=${id} url=${url} to=${outputFile}::Downloading bage image for id ${id}"
+        echo "::notice::Downloading bage image for id ${id}"
         curl --silent "${url}" > $outputFile    
     fi
 done
