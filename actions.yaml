@@ -1,17 +1,23 @@
-name: 'Credly to Hugo'
-description: 'Fetches a single users badges from Credly and stores them as Hugo data file.'
+name: Credly to Hugo importer
+description: Fetches a single users badges from Credly and stores them as Hugo data file.
 branding:
-  icon: 'award'
-  color: 'orange'
+  icon: award
+  color: orange
 inputs:
   username:
-    description: 'Username on credly'
+    description: Username on credly
     required: true
     type: string
   datafile:
-    description: 'Filename within the data/ folder'
+    description: Filename within the data/ folder
     required: false
     type: string
+    default: credly-badges.json
+  imagedir:
+    description: Path where to store the badge images
+    required: false
+    type: string
+    default: assets/images/credly-badges
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: docker
+  image: Dockerfile
