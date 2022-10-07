@@ -12,12 +12,12 @@ inputs:
     description: Filename within the data/ folder
     required: false
     type: string
-    default: credly-badges.json
+    default: CredlyBadges.json
   imagedir:
     description: Path where to store the badge images
     required: false
     type: string
-    default: assets/images/credly-badges
+    default: assets/images/CredlyBadges
 runs:
   using: docker
   image: Dockerfile
