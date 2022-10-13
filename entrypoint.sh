@@ -12,8 +12,7 @@ rm -f "$INPUT_DATAFILE"
 echo "::debug::Storage location for badge json file: $INPUT_DATAFILE"
 
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-$3}"
-INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-images/CredlyBadges}"
-IMAGEDIR_PREFIX="${GITHUB_WORKSPACE}/assets"
+INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-assets/images/CredlyBadges}"
 echo "::debug::Storage location for badge image files: $INPUT_IMAGEDIR"
 
 URL="https://www.credly.com/users/${INPUT_USERNAME}/badges.json"
@@ -51,12 +50,13 @@ echo "::notice::Found $BADGED_FOUND badges on Credly"
 
 for line in $(jq --raw-output '.[] | (.Id + "," + .RemoteImageUrl + "," + .LocalImagePath)' "$INPUT_DATAFILE"); do
     IFS=, read -r id remoteUrl localPath <<< "$line"
+    FULL_LOCAL_PATH="${GITHUB_WORKSPACE}/${localPath}"
 
-    if [ -f "$localPath" ]; then
+    if [ -f "$FULL_LOCAL_PATH" ]; then
         echo "::notice::Badge image for id $id already present - skipping download"
     else
         echo "::notice::Downloading bage image for id $id"
-        mkdir -p "$(dirname "${IMAGEDIR_PREFIX}/$localPath")"
-        curl --silent "$remoteUrl" > "${IMAGEDIR_PREFIX}/$localPath"
+        mkdir -p "$(dirname "$FULL_LOCAL_PATH")"
+        curl --silent "$remoteUrl" > "$FULL_LOCAL_PATH"
     fi
 done
