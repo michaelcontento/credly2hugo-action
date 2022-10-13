@@ -1,6 +1,6 @@
 # credly2hugo v1
 
-This action will download a given users certificates and badges from [Credly] and stores them within the current repository as **(a)** JSON [Hugo Data File][] and **(b)** badges as image raw image file. 
+This action will download a given users certificates and badges from [Credly] and stores them within the current repository as **(a)** JSON [Hugo Data File][] and **(b)** badges as image raw image file.
 
 ## Usage
 
@@ -17,6 +17,8 @@ By default this action will store the following files:
 
 - JSON file containting informations about all available certifications
     - `data/CredlyBadges.json`
+- The raw JSON file retrieved from Credly with all infos
+    - `data/CredlyBadgesRaw.json`
 - A folder full of images
     - `assets/images/CredlyBadges/*`
 
@@ -29,9 +31,10 @@ If you want to change the path where the JSON file and/or the images are stored,
   with:
     name: michael-contento
     datafile: CustomFile.json
-    # Final path: ./data/CustomFile.json
+    # Final path:     ./data/CustomFile.json
+    # Final path raw: ./data/CustomFileRaw.json
     imagedir: assets/foo
-    # Final path: ./assets/foo/*
+    # Final path:     ./assets/foo/*
 ```
 
 

@@ -11,6 +11,10 @@ mkdir -p "$(dirname "$INPUT_DATAFILE")"
 rm -f "$INPUT_DATAFILE"
 echo "::debug::Storage location for badge json file: $INPUT_DATAFILE"
 
+INPUT_DATAFILERAW="${INPUT_DATAFILE//.json/Raw.json}"
+rm -f "$INPUT_DATAFILERAW"
+echo "::debug::Storage location for raw badge json file: $INPUT_DATAFILERAW"
+
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-$3}"
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-assets/images/CredlyBadges}"
 echo "::debug::Storage location for badge image files: $INPUT_IMAGEDIR"
@@ -18,8 +22,9 @@ echo "::debug::Storage location for badge image files: $INPUT_IMAGEDIR"
 URL="https://www.credly.com/users/${INPUT_USERNAME}/badges.json"
 echo "::debug::Credly json url: $URL"
 echo "::notice::Downloading infos from Credly"
-curl --silent "$URL" \
-    | jq --sort-keys '
+curl --silent "$URL" | jq --sort-keys > "$INPUT_DATAFILERAW"
+jq --sort-keys \
+    '
         .data
         | map({
             "CredlyUrl": ("https://www.credly.com/badges/" + .id),
@@ -48,7 +53,9 @@ curl --silent "$URL" \
             "Name": .badge_template.name,
             "RemoteImageUrl": .badge_template.image_url
         })
-        | sort_by(.issued_at)' \
+        | sort_by(.issued_at)
+    ' \
+    "$INPUT_DATAFILERAW" \
     > "$INPUT_DATAFILE"
 
 BADGED_FOUND=$(jq '.[] | .id' "$INPUT_DATAFILE" | wc -l)
