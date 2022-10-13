@@ -36,9 +36,15 @@ curl --silent "$URL" \
                 + (.badge_template.image_url | split(".") | .[-1])
             ),
             "MicrosoftIds":
-                [.badge_template.badge_template_activities[] | .url]
-                | del(..|nulls)
-                | [.[] | split("/") | .[-1] | ascii_upcase ],
+                (if
+                    .issuer.entities[0].entity.name == "Microsoft"
+                then
+                    [.badge_template.badge_template_activities[] | .url]
+                    | del(..|nulls)
+                    | [.[] | split("/") | .[-1] | ascii_upcase ]
+                else
+                    null
+                end),
             "Name": .badge_template.name,
             "RemoteImageUrl": .badge_template.image_url
         })
