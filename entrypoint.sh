@@ -34,7 +34,7 @@ jq --sort-keys \
             "IssuedAt": .issued_at_date,
             "IssuerUrl": .badge_template.global_activity_url,
             "LocalImagePath": (
-                "'"$INPUT_IMAGEDIR"'"
+                "'"${INPUT_IMAGEDIR##assets/}"'"
                 + "/"
                 + .id
                 + "."
