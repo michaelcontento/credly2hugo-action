@@ -16,8 +16,8 @@ rm -f "$INPUT_DATAFILERAW"
 echo "::debug::Storage location for raw badge json file: $INPUT_DATAFILERAW"
 
 INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-$3}"
-INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-assets/images/CredlyBadges}"
-echo "::debug::Storage location for badge image files: $INPUT_IMAGEDIR"
+INPUT_IMAGEDIR="${INPUT_IMAGEDIR:-images/CredlyBadges}"
+echo "::debug::Storage location for badge image files: assets/$INPUT_IMAGEDIR"
 
 URL="https://www.credly.com/users/${INPUT_USERNAME}/badges.json"
 echo "::debug::Credly json url: $URL"
@@ -34,7 +34,7 @@ jq --sort-keys \
             "IssuedAt": .issued_at_date,
             "IssuerUrl": .badge_template.global_activity_url,
             "LocalImagePath": (
-                "'"${INPUT_IMAGEDIR##assets/}"'"
+                "'"${INPUT_IMAGEDIR}"'"
                 + "/"
                 + .id
                 + "."
@@ -63,7 +63,7 @@ echo "::notice::Found $BADGED_FOUND badges on Credly"
 
 for line in $(jq --raw-output '.[] | (.Id + "," + .RemoteImageUrl + "," + .LocalImagePath)' "$INPUT_DATAFILE"); do
     IFS=, read -r id remoteUrl localPath <<< "$line"
-    FULL_LOCAL_PATH="${GITHUB_WORKSPACE}/${localPath}"
+    FULL_LOCAL_PATH="${GITHUB_WORKSPACE}/assets/${localPath}"
 
     if [ -f "$FULL_LOCAL_PATH" ]; then
         echo "::notice::Badge image for id $id already present - skipping download"

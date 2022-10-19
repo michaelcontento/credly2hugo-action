@@ -33,8 +33,8 @@ If you want to change the path where the JSON file and/or the images are stored,
     datafile: CustomFile.json
     # Final path:     ./data/CustomFile.json
     # Final path raw: ./data/CustomFileRaw.json
-    imagedir: assets/foo
-    # Final path:     ./assets/foo/*
+    imagedir: foo/bar
+    # Final path:     ./assets/foo/bar/*
 ```
 
 

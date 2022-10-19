@@ -17,7 +17,7 @@ inputs:
     description: Path where to store the badge images
     required: false
     type: string
-    default: assets/images/CredlyBadges
+    default: images/CredlyBadges
 runs:
   using: docker
   image: Dockerfile
