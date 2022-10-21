@@ -22,7 +22,7 @@ echo "::debug::Storage location for badge image files: assets/$INPUT_IMAGEDIR"
 URL="https://www.credly.com/users/${INPUT_USERNAME}/badges.json"
 echo "::debug::Credly json url: $URL"
 echo "::notice::Downloading infos from Credly"
-curl --silent "$URL" | jq --sort-keys > "$INPUT_DATAFILERAW"
+curl --silent "$URL" | jq --sort-keys '.data|=sort_by(.issued_at)' > "$INPUT_DATAFILERAW"
 jq --sort-keys \
     '
         .data
