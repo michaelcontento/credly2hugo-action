@@ -29,9 +29,9 @@ jq --sort-keys \
         | map({
             "CredlyUrl": ("https://www.credly.com/badges/" + .id),
             "Description": .badge_template.description,
-            "ExpiresAt": .expires_at_date?,
+            "ExpiresAt": .expires_at?,
             "Id": .id,
-            "IssuedAt": .issued_at_date,
+            "IssuedAt": .issued_at,
             "IssuerUrl": .badge_template.global_activity_url,
             "LocalImagePath": (
                 "'"${INPUT_IMAGEDIR}"'"
